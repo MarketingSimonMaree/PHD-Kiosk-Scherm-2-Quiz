@@ -15,7 +15,7 @@ function App() {
     content:
       "Wij kunnen in bijna alle gevallen een opdekdeur en stalen kozijn voor onze plafondhoge deur met een houten kozijn. Zelfs als dit niet kamerhoog hoeft te zijn.",
     primaryButton: "Verder gaan",
-    primaryUrl: "javascript:window.kiosk.full('https://plafondhogedeur.nl/collections/deurmodellen');",
+    primaryUrl: "javascript:window.kiosk.split('https://plafondhogedeur.nl/collections/deurmodellen', 'https://plafondhogedeur.nl/pages/contact');",
     showSecondaryButton: false,
   },
   2: {
@@ -24,7 +24,7 @@ function App() {
       "Alleen als u het houten kozijn verwijderd kunnen wij hier onze plafondhogedeur met kozijn in plaatsen. Er zijn echter wel alternatieven voor in het bestaande kozijn. Ga verder en vraag advies aan Joost of neem contact op.",
     primaryButton: "Verder gaan",
     secondaryButton: "Contact voor alternatief",
-    primaryUrl: "javascript:window.kiosk.full('https://plafondhogedeur.nl/collections/deurmodellen');",
+    primaryUrl: "javascript:window.kiosk.split('https://plafondhogedeur.nl/collections/deurmodellen', 'https://plafondhogedeur.nl/pages/contact');",
     secondaryUrl: "javascript:window.kiosk.split('https://plafondhogedeur.nl/collections/deurmodellen', 'https://plafondhogedeur.nl/pages/contact');",
     showSecondaryButton: true,
   },
@@ -34,8 +34,8 @@ function App() {
       "Bij een lege sparing is onze plafondhoge deur met kozijn vaak wel mogelijk mits dit niet hoger dan 270 cm is of breder dan 105 cm",
     primaryButton: "Verder gaan",
     secondaryButton: "Meer informatie",
-    primaryUrl: "javascript:window.kiosk.split('https://plafondhogedeur.nl/collections/deurmodellen', 'https://plafondhogedeur.nl/collections/deurmodellen');",
-    secondaryUrl: "javascript:window.kiosk.full('https://plafondhogedeur.nl/collections/deurmodellen');",
+    primaryUrl: "javascript:window.kiosk.split('https://plafondhogedeur.nl/collections/deurmodellen', 'https://plafondhogedeur.nl/pages/contact');",
+    secondaryUrl: "javascript:window.kiosk.split('https://plafondhogedeur.nl/collections/deurmodellen', 'https://plafondhogedeur.nl/pages/contact');",
   },
 };
 

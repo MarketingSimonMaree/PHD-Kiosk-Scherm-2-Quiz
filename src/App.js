@@ -9,35 +9,35 @@ function App() {
     window.location.href = url;
   };
 
-  const modalContent = {
-    1: {
-      title: "Een plafondhoge deur is mogelijk bij jou! ",
-      content:
-        "Wij kunnen in bijna alle gevallen een opdekdeur en stalen kozijn voor onze plafodhoge deur met een houten kozijn. Zelfs als dit niet kamerhoog hoeft te zijn.",
-      primaryButton: "Verder gaan",
-      primaryUrl: "https://plafondhogedeur.nl/collections/deurmodellen",
-      showSecondaryButton: false,
-    },
-    2: {
-      title: "Helaas is onze plafondhoge deur niet mogelijk!",
-      content:
-        "Alleen als u het houten kozijn verwijderd kunnen wij hier onze plafondhogedeur met kozijn in plaatsen. Er zijn echter wel alternatieven voor in het bestaande kozijn. Neem hiervoor contact op.",
-      primaryButton: "Toch verder gaan",
-      secondaryButton: "Contact voor alternatief",
-      primaryUrl: "https://plafondhogedeur.nl/collections/deurmodellen",
-      secondaryUrl: "https://plafondhogedeur.nl/pages/contact",
-      showSecondaryButton: true,
-    },
-    3: {
-      title: "Onze plafondhoge deur is mogelijk",
-      content:
-        "Bij een lege sparing is onze plafondhoge deur met kozijn vaak wel mogelijk mits dit niet hoger dan 270 cm is of breder dan 105 cm",
-      primaryButton: "Verder gaan",
-      secondaryButton: "Meer informatie",
-      primaryUrl: "https://plafondhogedeur.nl/collections/deurmodellen",
-      secondaryUrl: "https://plafondhogedeur.nl/collections/deurmodellen",
-    },
-  };
+ const modalContent = {
+  1: {
+    title: "Een plafondhoge deur is mogelijk bij jou! ",
+    content:
+      "Wij kunnen in bijna alle gevallen een opdekdeur en stalen kozijn voor onze plafondhoge deur met een houten kozijn. Zelfs als dit niet kamerhoog hoeft te zijn.",
+    primaryButton: "Verder gaan",
+    primaryUrl: "javascript:window.kiosk.full('https://plafondhogedeur.nl/collections/deurmodellen');",
+    showSecondaryButton: false,
+  },
+  2: {
+    title: "Een plafondhoge deur lijkt niet mogelijk!",
+    content:
+      "Alleen als u het houten kozijn verwijderd kunnen wij hier onze plafondhogedeur met kozijn in plaatsen. Er zijn echter wel alternatieven voor in het bestaande kozijn. Ga verder en vraag advies aan Joost of neem contact op.",
+    primaryButton: "Verder gaan",
+    secondaryButton: "Contact voor alternatief",
+    primaryUrl: "javascript:window.kiosk.full('https://plafondhogedeur.nl/collections/deurmodellen');",
+    secondaryUrl: "javascript:window.kiosk.split('https://plafondhogedeur.nl/collections/deurmodellen', 'https://plafondhogedeur.nl/pages/contact');",
+    showSecondaryButton: true,
+  },
+  3: {
+    title: "Onze plafondhoge deur is mogelijk",
+    content:
+      "Bij een lege sparing is onze plafondhoge deur met kozijn vaak wel mogelijk mits dit niet hoger dan 270 cm is of breder dan 105 cm",
+    primaryButton: "Verder gaan",
+    secondaryButton: "Meer informatie",
+    primaryUrl: "javascript:window.kiosk.split('https://plafondhogedeur.nl/collections/deurmodellen', 'https://plafondhogedeur.nl/collections/deurmodellen');",
+    secondaryUrl: "javascript:window.kiosk.full('https://plafondhogedeur.nl/collections/deurmodellen');",
+  },
+};
 
   return (
     <div className="container">

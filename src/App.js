@@ -24,8 +24,8 @@ function App() {
       "Alleen als u het houten kozijn verwijderd kunnen wij hier onze plafondhogedeur met kozijn in plaatsen. Er zijn echter wel alternatieven voor in het bestaande kozijn. Ga verder en vraag advies aan Joost of neem contact op.",
     primaryButton: "Verder gaan",
     secondaryButton: "Contact voor alternatief",
-    primaryUrl: "javascript:window.kiosk.full('https://plafondhogedeur.nl/collections/deurmodellen');",
-    secondaryUrl: "javascript:window.kiosk.split('https://plafondhogedeur.nl/collections/deurmodellen', 'https://plafondhogedeur.nl/pages/contact');",
+    primaryUrl: "window.kiosk.full('https://plafondhogedeur.nl/collections/deurmodellen');",
+    secondaryUrl: "window.kiosk.split('https://plafondhogedeur.nl/collections/deurmodellen', 'https://plafondhogedeur.nl/pages/contact');",
     showSecondaryButton: true,
   },
   3: {

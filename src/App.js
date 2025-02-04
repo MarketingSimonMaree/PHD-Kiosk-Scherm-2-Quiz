@@ -19,7 +19,7 @@ function App() {
     showSecondaryButton: false,
   },
   2: {
-    title: "Een plafondhoge deur lijkt niet mogelijk!",
+    title: "Een plafondhoge deur is alleen mogelijk als ...",
     content:
       "Alleen als u het houten kozijn verwijderd kunnen wij hier onze plafondhogedeur met kozijn in plaatsen. Er zijn echter wel alternatieven voor in het bestaande kozijn. Ga verder en vraag advies aan Joost of neem contact op.",
     primaryButton: "Verder gaan",

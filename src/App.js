@@ -7,6 +7,7 @@ function App() {
   const [selectedModal, setSelectedModal] = useState(null);
   const [loopCount, setLoopCount] = useState(0);
   const [audioEnabled, setAudioEnabled] = useState(true);
+  const [isInitialized, setIsInitialized] = useState(false);
   const videoRef = useRef(null);
   const lastTimeRef = useRef(0);
 
@@ -58,25 +59,35 @@ function App() {
 
   // Initialiseer Google Analytics en Hotjar
   useEffect(() => {
-    // GA4 initialisatie
-    ReactGA.initialize('G-380B88GYQS');
-    ReactGA.send({ hitType: "pageview", page: window.location.pathname });
-    
-    // Hotjar initialisatie
-    hotjar.initialize(5329980, 6);
+    try {
+      console.log('Initializing analytics...');
+      ReactGA.initialize('G-380B88GYQS');
+      ReactGA.send({ hitType: "pageview", page: window.location.pathname });
+      
+      console.log('Initializing Hotjar...');
+      hotjar.initialize(5329980, 6);
+      
+      setIsInitialized(true);
+      console.log('Initialization complete');
+    } catch (error) {
+      console.error('Error during initialization:', error);
+    }
   }, []);
 
   // Aangepaste event tracking functie voor GA4
   const trackEvent = (eventName, eventParams) => {
-    // Google Analytics 4 event
-    ReactGA.event(eventName, {
-      ...eventParams,
-      nonInteraction: false
-    });
+    try {
+      console.log('Tracking event:', eventName, eventParams);
+      ReactGA.event(eventName, {
+        ...eventParams,
+        nonInteraction: false
+      });
 
-    // Hotjar event
-    if (window.hj) {
-      window.hj('event', eventName);
+      if (window.hj) {
+        window.hj('event', eventName);
+      }
+    } catch (error) {
+      console.error('Error tracking event:', error);
     }
   };
 
@@ -169,104 +180,106 @@ function App() {
 };
 
   return (
-    <>
-      <div className="video-container">
-        <div className="chat-icon">
-          <video 
-            ref={videoRef}
-            className="mini-video" 
-            autoPlay 
-            loop 
-            playsInline
-            preload="auto"
-            onTimeUpdate={handleTimeUpdate}
-          >
-            <source src="https://cdn.shopify.com/videos/c/o/v/782900670a114a0ca003f0cb82db2458.mp4" type="video/mp4" />
-            <img src="https://cdn.shopify.com/s/files/1/0524/8794/6424/files/Joost-Chat-Bot-Popup-Quiz-01-Thumb-2.jpg?v=1741350590" alt="Chat thumbnail" />
-          </video>
-          <div className="speaker-icon">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
-            </svg>
-          </div>
-        </div>
-      </div>
-      <div className="container">
-        <div className="logo">
-          <img
-            src="https://plafondhogedeur.nl/cdn/shop/t/2/assets/phd-logo.svg?v=173245948125749905881618906759"
-            alt="Logo"
-          />
-        </div>
-        <h1>Selecteer de situatie bij u thuis. Klik op de foto</h1>
-        <div className="grid">
-          <div className="card" onClick={() => handleCardClick(1)}>
-            <img
-              src="https://files.widgetic.com/file/widgetic-uploads/app/600ee0c5ecb2a1eb798b456b/ko1bioac-l9ig7n.jpg"
-              alt="Opdekdeur"
-            />
-            <h2>
-              Opdekdeur met
-              <br />
-              stalen kozijn
-            </h2>
-          </div>
-          <div className="card" onClick={() => handleCardClick(2)}>
-            <img
-              src="https://cdn.shopify.com/s/files/1/0524/8794/6424/files/Houten-Kozijn-4.jpg?v=1732630584"
-              alt="Houten kozijn"
-            />
-            <h2>Houten kozijn</h2>
-          </div>
-          <div className="card" onClick={() => handleCardClick(3)}>
-            <img
-              src="https://cdn.shopify.com/s/files/1/0524/8794/6424/files/Kale-Sparing-3.jpg?v=1732630703"
-              alt="Lege sparing"
-            />
-            <h2>Lege sparing</h2>
+    <div className="app-container">
+      {/* Voeg een basis container toe voor debugging */}
+      <div style={{ minHeight: '100vh' }}>
+        <div className="video-container">
+          <div className="chat-icon">
+            <video 
+              ref={videoRef}
+              className="mini-video" 
+              autoPlay 
+              loop 
+              playsInline
+              onTimeUpdate={handleTimeUpdate}
+            >
+              <source src="https://cdn.shopify.com/videos/c/o/v/782900670a114a0ca003f0cb82db2458.mp4" type="video/mp4" />
+            </video>
+            <div className="speaker-icon">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+              </svg>
+            </div>
           </div>
         </div>
 
-        {selectedModal && (
-          <div className="modal-overlay" onClick={() => setSelectedModal(null)}>
-            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-              <button
-                className="close-button"
-                onClick={() => setSelectedModal(null)}
-              >
-                ×
-              </button>
-              <h2>{modalContent[selectedModal].title}</h2>
-              <p>{modalContent[selectedModal].content}</p>
-              <div className="button-container">
-                <button
-                  className="modal-button primary"
-                  onClick={() => handleButtonClick(
-                    modalContent[selectedModal].primaryUrl,
-                    modalContent[selectedModal].title,
-                    'Verder gaan'
-                  )}
-                >
-                  {modalContent[selectedModal].primaryButton}
-                </button>
-                {modalContent[selectedModal].showSecondaryButton && (
-                  <button
-                    className="modal-button secondary"
-                    onClick={() => handleButtonClick(
-                      modalContent[selectedModal].secondaryUrl,
-                      modalContent[selectedModal].title,
-                      'Secundaire optie'
-                    )}
-                  >
-                    {modalContent[selectedModal].secondaryButton}
-                  </button>
-                )}
-              </div>
+        <div className="container">
+          <div className="logo">
+            <img
+              src="https://plafondhogedeur.nl/cdn/shop/t/2/assets/phd-logo.svg?v=173245948125749905881618906759"
+              alt="Logo"
+            />
+          </div>
+          <h1>Selecteer de situatie bij u thuis. Klik op de foto</h1>
+          <div className="grid">
+            <div className="card" onClick={() => handleCardClick(1)}>
+              <img
+                src="https://files.widgetic.com/file/widgetic-uploads/app/600ee0c5ecb2a1eb798b456b/ko1bioac-l9ig7n.jpg"
+                alt="Opdekdeur"
+              />
+              <h2>
+                Opdekdeur met
+                <br />
+                stalen kozijn
+              </h2>
+            </div>
+            <div className="card" onClick={() => handleCardClick(2)}>
+              <img
+                src="https://cdn.shopify.com/s/files/1/0524/8794/6424/files/Houten-Kozijn-4.jpg?v=1732630584"
+                alt="Houten kozijn"
+              />
+              <h2>Houten kozijn</h2>
+            </div>
+            <div className="card" onClick={() => handleCardClick(3)}>
+              <img
+                src="https://cdn.shopify.com/s/files/1/0524/8794/6424/files/Kale-Sparing-3.jpg?v=1732630703"
+                alt="Lege sparing"
+              />
+              <h2>Lege sparing</h2>
             </div>
           </div>
-        )}
+
+          {selectedModal && (
+            <div className="modal-overlay" onClick={() => setSelectedModal(null)}>
+              <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                <button
+                  className="close-button"
+                  onClick={() => setSelectedModal(null)}
+                >
+                  ×
+                </button>
+                <h2>{modalContent[selectedModal].title}</h2>
+                <p>{modalContent[selectedModal].content}</p>
+                <div className="button-container">
+                  <button
+                    className="modal-button primary"
+                    onClick={() => handleButtonClick(
+                      modalContent[selectedModal].primaryUrl,
+                      modalContent[selectedModal].title,
+                      'Verder gaan'
+                    )}
+                  >
+                    {modalContent[selectedModal].primaryButton}
+                  </button>
+                  {modalContent[selectedModal].showSecondaryButton && (
+                    <button
+                      className="modal-button secondary"
+                      onClick={() => handleButtonClick(
+                        modalContent[selectedModal].secondaryUrl,
+                        modalContent[selectedModal].title,
+                        'Secundaire optie'
+                      )}
+                    >
+                      {modalContent[selectedModal].secondaryButton}
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
-    </>
+    </div>
   );
 }
 

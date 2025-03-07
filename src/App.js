@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import "./styles.css";
-import ReactGA from 'react-ga';
+import ReactGA from 'react-ga4';
 import hotjar from '@hotjar/browser';
 
 function App() {
@@ -58,25 +58,20 @@ function App() {
 
   // Initialiseer Google Analytics en Hotjar
   useEffect(() => {
-    // Google Analytics initialisatie
+    // GA4 initialisatie
     ReactGA.initialize('G-380B88GYQS');
-    ReactGA.pageview(window.location.pathname);
-
+    ReactGA.send({ hitType: "pageview", page: window.location.pathname });
+    
     // Hotjar initialisatie
-    hotjar.initialize(5329980, 6); // Jouw Hotjar ID en versie
+    hotjar.initialize(5329980, 6);
   }, []);
 
-  // Verbeterde event tracking functie voor GA4
+  // Aangepaste event tracking functie voor GA4
   const trackEvent = (eventName, eventParams) => {
     // Google Analytics 4 event
-    ReactGA.event({
-      category: eventParams.category,
-      action: eventName,
-      label: eventParams.label,
-      // GA4 specifieke parameters
-      value: eventParams.value,
-      nonInteraction: false,
-      transport: 'beacon'
+    ReactGA.event(eventName, {
+      ...eventParams,
+      nonInteraction: false
     });
 
     // Hotjar event

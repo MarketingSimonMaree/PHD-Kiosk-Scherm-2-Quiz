@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import "./styles.css";
 import ReactGA from 'react-ga';
-import { hotjar } from '@hotjar/browser';
+import hotjar from '@hotjar/browser';
 
 function App() {
   const [selectedModal, setSelectedModal] = useState(null);
@@ -66,32 +66,29 @@ function App() {
     hotjar.initialize(5329980, 6); // Jouw Hotjar ID en versie
   }, []);
 
-  // Event tracking functie (nu voor zowel GA als Hotjar)
-  const trackEvent = (category, action, label) => {
-    // Google Analytics event
+  // Verbeterde event tracking functie voor GA4
+  const trackEvent = (eventName, eventParams) => {
+    // Google Analytics 4 event
     ReactGA.event({
-      category: category,
-      action: action,
-      label: label
+      category: eventParams.category,
+      action: eventName,
+      label: eventParams.label,
+      // GA4 specifieke parameters
+      value: eventParams.value,
+      nonInteraction: false,
+      transport: 'beacon'
     });
 
     // Hotjar event
     if (window.hj) {
-      window.hj('event', `${category}_${action}`);
+      window.hj('event', eventName);
     }
   };
 
-  // Pas de handleButtonClick functie aan
-  const handleButtonClick = (url, optionName) => {
-    trackEvent('Button', 'Click', optionName);
-    window.location.href = url;
-  };
-
-  // Pas de onClick handlers aan voor de kaarten
+  // Aangepaste click handler voor de kaarten
   const handleCardClick = (modalNumber) => {
     setSelectedModal(modalNumber);
     
-    // Track welke optie is gekozen
     let optionName;
     switch(modalNumber) {
       case 1:
@@ -107,7 +104,30 @@ function App() {
         optionName = 'Onbekende optie';
     }
     
-    trackEvent('Deur Selectie', 'Click', optionName);
+    // Gedetailleerd event voor optie selectie
+    trackEvent('select_option', {
+      category: 'Deur Selectie',
+      label: optionName,
+      value: modalNumber,
+      option_type: optionName,
+      step: 'initial_selection'
+    });
+  };
+
+  // Aangepaste button click handler voor de vervolgstappen
+  const handleButtonClick = (url, optionName, buttonType) => {
+    // Gedetailleerd event voor button clicks
+    trackEvent('click_button', {
+      category: 'Navigation',
+      label: `${optionName} - ${buttonType}`,
+      value: 1,
+      option_selected: optionName,
+      button_type: buttonType,
+      destination_url: url,
+      step: 'follow_through'
+    });
+
+    window.location.href = url;
   };
 
   const handleVideoLoop = () => {
@@ -228,7 +248,8 @@ function App() {
                   className="modal-button primary"
                   onClick={() => handleButtonClick(
                     modalContent[selectedModal].primaryUrl,
-                    `${modalContent[selectedModal].title} - Primary Button`
+                    modalContent[selectedModal].title,
+                    'Verder gaan'
                   )}
                 >
                   {modalContent[selectedModal].primaryButton}
@@ -238,7 +259,8 @@ function App() {
                     className="modal-button secondary"
                     onClick={() => handleButtonClick(
                       modalContent[selectedModal].secondaryUrl,
-                      `${modalContent[selectedModal].title} - Secondary Button`
+                      modalContent[selectedModal].title,
+                      'Secundaire optie'
                     )}
                   >
                     {modalContent[selectedModal].secondaryButton}

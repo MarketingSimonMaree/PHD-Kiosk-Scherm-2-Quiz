@@ -13,6 +13,19 @@ function App() {
   const muteLoops = 3;     // Aantal loops met geluid uit
   const totalPattern = audioLoops + muteLoops;
 
+  // Start video functie
+  const startVideo = async () => {
+    if (videoRef.current) {
+      try {
+        videoRef.current.muted = !audioEnabled;
+        videoRef.current.volume = 1;
+        await videoRef.current.play();
+      } catch (err) {
+        console.error("Video start failed:", err);
+      }
+    }
+  };
+
   const handleTimeUpdate = () => {
     if (videoRef.current) {
       const currentTime = videoRef.current.currentTime;
@@ -28,6 +41,11 @@ function App() {
       lastTimeRef.current = currentTime;
     }
   };
+
+  // Start video wanneer component mount
+  useEffect(() => {
+    startVideo();
+  }, []);
 
   // Update muted status wanneer audioEnabled verandert
   useEffect(() => {
@@ -60,7 +78,7 @@ function App() {
     content:
       "Wij kunnen in bijna alle gevallen een opdekdeur en stalen kozijn voor onze plafondhoge deur met een houten kozijn. Zelfs als dit niet kamerhoog hoeft te zijn.",
     primaryButton: "Verder gaan",
-    primaryUrl: "javascript:window.kiosk.split('https://digitale-adviseur-phd-kiosk-v1.vercel.app/', 'https://plafondhogedeur.nl/collections/deurmodellen');",
+    primaryUrl: "javascript:window.kiosk.split('https://phd-digitale-adviseur-final-v2.vercel.app/', 'https://plafondhogedeur.nl/collections/deurmodellen');",
     showSecondaryButton: false,
   },
   2: {
@@ -69,7 +87,7 @@ function App() {
       "Alleen als u het houten kozijn verwijderd kunnen wij hier onze plafondhogedeur met kozijn in plaatsen. Er zijn echter wel alternatieven voor in het bestaande kozijn. Ga verder en vraag advies aan Joost of neem contact op.",
     primaryButton: "Verder gaan",
     secondaryButton: "Contact voor alternatief",
-    primaryUrl: "javascript:window.kiosk.split('https://site.flaire.nl/phd/audio.html/', 'https://plafondhogedeur.nl/collections/deurmodellen');",
+    primaryUrl: "javascript:window.kiosk.split('https://phd-digitale-adviseur-final-v2.vercel.app/', 'https://plafondhogedeur.nl/collections/deurmodellen');",
     secondaryUrl: "javascript:window.kiosk.split('https://digitale-adviseur-phd-kiosk-v1.vercel.app/', 'https://plafondhogedeur.nl/pages/contact');",
     showSecondaryButton: true,
   },
@@ -94,6 +112,7 @@ function App() {
             autoPlay 
             loop 
             playsInline
+            preload="auto"
             onTimeUpdate={handleTimeUpdate}
           >
             <source src="https://cdn.shopify.com/videos/c/o/v/782900670a114a0ca003f0cb82db2458.mp4" type="video/mp4" />

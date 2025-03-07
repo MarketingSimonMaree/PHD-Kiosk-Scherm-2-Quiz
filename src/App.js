@@ -69,7 +69,7 @@ function App() {
       "Alleen als u het houten kozijn verwijderd kunnen wij hier onze plafondhogedeur met kozijn in plaatsen. Er zijn echter wel alternatieven voor in het bestaande kozijn. Ga verder en vraag advies aan Joost of neem contact op.",
     primaryButton: "Verder gaan",
     secondaryButton: "Contact voor alternatief",
-    primaryUrl: "javascript:window.kiosk.split('https://digitale-adviseur-phd-kiosk-v1.vercel.app/', 'https://plafondhogedeur.nl/collections/deurmodellen');",
+    primaryUrl: "javascript:window.kiosk.split('https://site.flaire.nl/phd/audio.html/', 'https://plafondhogedeur.nl/collections/deurmodellen');",
     secondaryUrl: "javascript:window.kiosk.split('https://digitale-adviseur-phd-kiosk-v1.vercel.app/', 'https://plafondhogedeur.nl/pages/contact');",
     showSecondaryButton: true,
   },

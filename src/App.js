@@ -15,7 +15,7 @@ function App() {
     content:
       "Wij kunnen in bijna alle gevallen een opdekdeur en stalen kozijn voor onze plafondhoge deur met een houten kozijn. Zelfs als dit niet kamerhoog hoeft te zijn.",
     primaryButton: "Verder gaan",
-    primaryUrl: "javascript:window.kiosk.split('https://phd-digitale-adviseur-final-v3.vercel.app/', 'https://plafondhogedeur.nl/collections/deurmodellen');",
+    primaryUrl: "javascript:window.kiosk.split('https://digitale-adviseur-phd-kiosk-v1.vercel.app/', 'https://plafondhogedeur.nl/collections/deurmodellen');",
     showSecondaryButton: false,
   },
   2: {

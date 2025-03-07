@@ -1,10 +1,40 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import "./styles.css";
 
 function App() {
   const [selectedModal, setSelectedModal] = useState(null);
   const [loopCount, setLoopCount] = useState(0);
+  const [audioEnabled, setAudioEnabled] = useState(true);
   const videoRef = useRef(null);
+  const lastTimeRef = useRef(0);
+
+  // Video loop patroon configuratie
+  const audioLoops = 2;    // Aantal loops met geluid aan
+  const muteLoops = 3;     // Aantal loops met geluid uit
+  const totalPattern = audioLoops + muteLoops;
+
+  const handleTimeUpdate = () => {
+    if (videoRef.current) {
+      const currentTime = videoRef.current.currentTime;
+      // Als de video opnieuw start
+      if (currentTime < lastTimeRef.current) {
+        const newLoopCount = (loopCount + 1) % totalPattern;
+        setLoopCount(newLoopCount);
+        
+        // Bepaal of audio aan moet staan
+        const shouldEnableAudio = newLoopCount < audioLoops;
+        setAudioEnabled(shouldEnableAudio);
+      }
+      lastTimeRef.current = currentTime;
+    }
+  };
+
+  // Update muted status wanneer audioEnabled verandert
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.muted = !audioEnabled;
+    }
+  }, [audioEnabled]);
 
   // Voeg deze functie toe
   const handleButtonClick = (url) => {
@@ -13,17 +43,11 @@ function App() {
 
   const handleVideoLoop = () => {
     setLoopCount(prev => {
-      const newCount = prev + 1;
+      const newCount = (prev + 1) % totalPattern;
       
-      // Na 2 loops muten
-      if (newCount === 2) {
-        videoRef.current.muted = true;
-      }
-      
-      // Na 5 loops (2 met geluid + 3 zonder) unmuten en reset
-      if (newCount >= 5) {
-        videoRef.current.muted = false;
-        return 0;
+      // Bepaal of de video gemute moet zijn
+      if (videoRef.current) {
+        videoRef.current.muted = newCount >= audioLoops;
       }
       
       return newCount;
@@ -45,7 +69,7 @@ function App() {
       "Alleen als u het houten kozijn verwijderd kunnen wij hier onze plafondhogedeur met kozijn in plaatsen. Er zijn echter wel alternatieven voor in het bestaande kozijn. Ga verder en vraag advies aan Joost of neem contact op.",
     primaryButton: "Verder gaan",
     secondaryButton: "Contact voor alternatief",
-    primaryUrl: "javascript:window.kiosk.split('https://digitale-adviseur-phd-kiosk-v1.vercel.app/', 'https://plafondhogedeur.nl/collections/deurmodellen');",
+    primaryUrl: "javascript:window.kiosk.split('https://phd-digitale-adviseur-final-v2.vercel.app/', 'https://plafondhogedeur.nl/collections/deurmodellen');",
     secondaryUrl: "javascript:window.kiosk.split('https://digitale-adviseur-phd-kiosk-v1.vercel.app/', 'https://plafondhogedeur.nl/pages/contact');",
     showSecondaryButton: true,
   },
@@ -70,7 +94,7 @@ function App() {
             autoPlay 
             loop 
             playsInline
-            onEnded={handleVideoLoop}
+            onTimeUpdate={handleTimeUpdate}
           >
             <source src="https://cdn.shopify.com/videos/c/o/v/782900670a114a0ca003f0cb82db2458.mp4" type="video/mp4" />
             <img src="https://cdn.shopify.com/s/files/1/0524/8794/6424/files/Joost-Chat-Bot-Popup-Quiz-01-Thumb-2.jpg?v=1741350590" alt="Chat thumbnail" />

@@ -1,5 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import "./styles.css";
+import ReactGA from 'react-ga';
+import { hotjar } from '@hotjar/browser';
 
 function App() {
   const [selectedModal, setSelectedModal] = useState(null);
@@ -54,9 +56,58 @@ function App() {
     }
   }, [audioEnabled]);
 
-  // Voeg deze functie toe
-  const handleButtonClick = (url) => {
+  // Initialiseer Google Analytics en Hotjar
+  useEffect(() => {
+    // Google Analytics initialisatie
+    ReactGA.initialize('G-380B88GYQS');
+    ReactGA.pageview(window.location.pathname);
+
+    // Hotjar initialisatie
+    hotjar.initialize(5329980, 6); // Jouw Hotjar ID en versie
+  }, []);
+
+  // Event tracking functie (nu voor zowel GA als Hotjar)
+  const trackEvent = (category, action, label) => {
+    // Google Analytics event
+    ReactGA.event({
+      category: category,
+      action: action,
+      label: label
+    });
+
+    // Hotjar event
+    if (window.hj) {
+      window.hj('event', `${category}_${action}`);
+    }
+  };
+
+  // Pas de handleButtonClick functie aan
+  const handleButtonClick = (url, optionName) => {
+    trackEvent('Button', 'Click', optionName);
     window.location.href = url;
+  };
+
+  // Pas de onClick handlers aan voor de kaarten
+  const handleCardClick = (modalNumber) => {
+    setSelectedModal(modalNumber);
+    
+    // Track welke optie is gekozen
+    let optionName;
+    switch(modalNumber) {
+      case 1:
+        optionName = 'Opdekdeur met stalen kozijn';
+        break;
+      case 2:
+        optionName = 'Houten kozijn';
+        break;
+      case 3:
+        optionName = 'Lege sparing';
+        break;
+      default:
+        optionName = 'Onbekende optie';
+    }
+    
+    trackEvent('Deur Selectie', 'Click', optionName);
   };
 
   const handleVideoLoop = () => {
@@ -134,7 +185,7 @@ function App() {
         </div>
         <h1>Selecteer de situatie bij u thuis. Klik op de foto</h1>
         <div className="grid">
-          <div className="card" onClick={() => setSelectedModal(1)}>
+          <div className="card" onClick={() => handleCardClick(1)}>
             <img
               src="https://files.widgetic.com/file/widgetic-uploads/app/600ee0c5ecb2a1eb798b456b/ko1bioac-l9ig7n.jpg"
               alt="Opdekdeur"
@@ -145,14 +196,14 @@ function App() {
               stalen kozijn
             </h2>
           </div>
-          <div className="card" onClick={() => setSelectedModal(2)}>
+          <div className="card" onClick={() => handleCardClick(2)}>
             <img
               src="https://cdn.shopify.com/s/files/1/0524/8794/6424/files/Houten-Kozijn-4.jpg?v=1732630584"
               alt="Houten kozijn"
             />
             <h2>Houten kozijn</h2>
           </div>
-          <div className="card" onClick={() => setSelectedModal(3)}>
+          <div className="card" onClick={() => handleCardClick(3)}>
             <img
               src="https://cdn.shopify.com/s/files/1/0524/8794/6424/files/Kale-Sparing-3.jpg?v=1732630703"
               alt="Lege sparing"
@@ -175,18 +226,20 @@ function App() {
               <div className="button-container">
                 <button
                   className="modal-button primary"
-                  onClick={() =>
-                    handleButtonClick(modalContent[selectedModal].primaryUrl)
-                  }
+                  onClick={() => handleButtonClick(
+                    modalContent[selectedModal].primaryUrl,
+                    `${modalContent[selectedModal].title} - Primary Button`
+                  )}
                 >
                   {modalContent[selectedModal].primaryButton}
                 </button>
                 {modalContent[selectedModal].showSecondaryButton && (
                   <button
                     className="modal-button secondary"
-                    onClick={() =>
-                      handleButtonClick(modalContent[selectedModal].secondaryUrl)
-                    }
+                    onClick={() => handleButtonClick(
+                      modalContent[selectedModal].secondaryUrl,
+                      `${modalContent[selectedModal].title} - Secondary Button`
+                    )}
                   >
                     {modalContent[selectedModal].secondaryButton}
                   </button>

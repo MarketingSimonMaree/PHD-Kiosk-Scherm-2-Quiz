@@ -193,7 +193,7 @@ function App() {
               playsInline
               onTimeUpdate={handleTimeUpdate}
             >
-              <source src="https://cdn.shopify.com/videos/c/o/v/782900670a114a0ca003f0cb82db2458.mp4" type="video/mp4" />
+              <source src="https://cdn.shopify.com/videos/c/o/v/03cdcdf1f90c4401aba6b957dfac7290.mp4" type="video/mp4" />
             </video>
             <div className="speaker-icon">
               <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
